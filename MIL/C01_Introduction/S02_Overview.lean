@@ -18,6 +18,8 @@ def FermatLastTheorem :=
 
 #check FermatLastTheorem
 
+#check 2+2=3
+
 -- These are proofs of propositions.
 theorem easy : 2 + 2 = 4 :=
   rfl
@@ -52,4 +54,3 @@ example : ∀ m n : Nat, Even n → Even (m * n) := by
 
 example : ∀ m n : Nat, Even n → Even (m * n) := by
   intros; simp [*, parity_simps]
-
