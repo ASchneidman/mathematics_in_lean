@@ -155,41 +155,23 @@ namespace MyGroup
       add -> mul
       zero -> one
       0 -> 1
+
+      deleted all theorems which depended on comm axioms
  -/
 theorem inv_mul_cancel_left (a b : G) : a⁻¹ * (a * b) = b := by
   rw [← mul_assoc, inv_mul_cancel, one_mul]
 
 theorem mul_inv_cancel_right (a b : G) : a * b * b⁻¹ = a := by
-  sorry
+  rw [mul_assoc, mul_inv_cancel, mul_one]
 
 theorem mul_left_cancel {a b c : G} (h : a * b = a * c) : b = c := by
   rw [← inv_mul_cancel_left a b, h, inv_mul_cancel_left]
-
-theorem mul_right_cancel {a b c : G} (h : a * b = c * b) : a = c := by
-  sorry
-
-theorem mul_one (a : G) : a * 1 = 1 := by
-  have h : a * 1 * a * 1 = a * 1 * 1 := by
-    rw [← mul_mul, mul_one, mul_one]
-  rw [mul_left_cancel h]
-
-theorem one_mul (a : G) : 1 * a = 1 := by
-  have h : 1 * a * 1 * a = 1 * a * 1 := by
-    rw [← mul_mul, mul_one, mul_one]
-  rw [mul_left_cancel h]
 
 theorem inv_eq_of_mul_eq_one {a b : G} (h : a * b = 1) : a⁻¹ = b := by
   have h' : a * b = a * a⁻¹ := by
     rw [← mul_inv_cancel a] at h
     exact h
   rw [← mul_left_cancel h']
-
-theorem eq_inv_of_mul_eq_one {a b : G} (h : a * b = 1) : a = b⁻¹ := by
-  have h' : a * b = b⁻¹ * b := by
-    rw [← mul_inv_cancel b] at h
-    rw [mul_comm (b⁻¹) b]
-    exact h
-  rw [← mul_right_cancel h']
 
 theorem inv_one : (1⁻¹ : G) = 1 := by
   apply inv_eq_of_mul_eq_one
@@ -203,8 +185,7 @@ theorem inv_inv (a : G) : (a⁻¹)⁻¹ = a := by
 /- done -/
 
 theorem mul_inv_cancel (a : G) : a * a⁻¹ = 1 := by
-  sorry
-
+  rw [← one_mul (a * a⁻¹), ← mul_assoc, mul_inv_cancel_right]
 
 theorem mul_one (a : G) : a * 1 = a := by
   rw [← inv_mul_cancel a]
@@ -213,7 +194,12 @@ theorem mul_one (a : G) : a * 1 = a := by
   rw [one_mul]
 
 theorem mul_inv_rev (a b : G) : (a * b)⁻¹ = b⁻¹ * a⁻¹ := by
-  sorry
+  have h : (a * b) * (a * b)⁻¹ = (a * b) * (b⁻¹ * a⁻¹) := by
+    rw [mul_inv_cancel]
+    rw [← mul_assoc]
+    rw [mul_inv_cancel_right]
+    rw [mul_inv_cancel]
+  rw [mul_left_cancel h]
 
 end MyGroup
 
